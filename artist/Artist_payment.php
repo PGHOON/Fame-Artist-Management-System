@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['id'])) {
-    header("Location: Login1.php");
+    header("Location: ../login/Login1.php");
     exit();
 }
 
@@ -37,17 +37,13 @@ GROUP BY ar.FirstName, co.RoyaltyPerc";
 $stmt = $conn->prepare($query);
 $stmt->bindParam(':artistid', $_SESSION['id']);
 $stmt->execute();
-
-
-// Execute statement
-$stmt->execute();
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>Artist Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="Styles.css">
+    <link rel="stylesheet" type="text/css" href="../Styles.css">
 </head>
 <body>
     <nav>
@@ -56,11 +52,11 @@ $stmt->execute();
             <li><a href="Artist_contract.php">Contract</a></li>
             <li><a href="Artist_payment.php">Payment</a></li>
             <li><a href="Artist_schedule.php">Schedule</a></li>
-            <li><a href="Logout.php">Logout</a></li>
+            <li><a href="../login/Logout.php">Logout</a></li>
         </ul>
     </nav>
     <div class="box">
-        <h2>Welcome, <?php echo $_SESSION['firstname'] . " " . $_SESSION['lastname']; ?>!</h2>
+        <h2>Welcome, Artist <?php echo $_SESSION['firstname'] . " " . $_SESSION['lastname']; ?>!</h2>
         <p>This is your Payment Information.</p>
     </div>
     <table>

@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['id'])) {
-    header("Location: Login1.php");
+    header("Location: ../login/Login2.php");
     exit();
 }
 
@@ -19,8 +19,11 @@ try {
     echo "Connection failed: " . $e->getMessage();
 }
 
-// Query for Artist information
-$query = "SELECT * FROM artist_t WHERE ArtistID = :artistid";
+// Query for Prospective Artist information
+$query = "SELECT *
+FROM artist_t a
+JOIN prospectiveartist_t pa ON a.ArtistID = pa.ArtistID
+WHERE pa.ArtistID = :artistid";
 
 $stmt = $conn->prepare($query);
 $stmt->bindParam(':artistid', $_SESSION['id']);
@@ -61,26 +64,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Artist Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="Styles.css">
+    <title>Prospective Artist Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="../Styles.css">
 </head>
 <body>
     <nav>
         <ul>
-            <li><a href="Dashboard_artist.php">Dashboard</a></li>
-            <li><a href="Artist_contract.php">Contract</a></li>
-            <li><a href="Artist_payment.php">Payment</a></li>
-            <li><a href="Artist_schedule.php">Schedule</a></li>
-            <li><a href="Logout.php">Logout</a></li>
+            <li><a href="Dashboard_prospective.php">Dashboard</a></li>
+            <li><a href="Prospective_recommendation.php">Recommendation</a></li>
+            <li><a href="Prospective_portfolio.php">Submit Portfolio</a></li>
+            <li><a href="Prospective_application.php">Status of Application</a></li>
+            <li><a href="../login/Logout.php">Logout</a></li>
         </ul>
     </nav>
     <div class="box">
-        <h2>Welcome, <?php echo $_SESSION['firstname'] . " " . $_SESSION['lastname']; ?>!</h2>
-        <p>This is your Artist Dashboard.</p>
+        <h2>Welcome, Prospective Artist <?php $row = $stmt->fetch(PDO::FETCH_ASSOC); echo $row['FirstName'] . " " . $row['LastName']; ?>!</h2>
+        <p>This is your Prospective Artist Dashboard.</p>
     </div>
     <div class="center">
-    <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>
-      <form method="POST" action="Dashboard_artist.php">
+    <?php
+      $stmt = $conn->prepare($query);
+      $stmt->bindParam(':artistid', $_SESSION['id']);
+      $stmt->execute();
+      while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>
+      <form method="POST" action="Dashboard_prospective.php">
         <input type="hidden" name="artistid" value="<?php echo $row['ArtistID']; ?>">
         <label>First Name:</label>
         <input type="text" name="firstname" value="<?php echo $row['FirstName']; ?>"><br>
@@ -102,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="text" name="phone" value="<?php echo $row['Phone']; ?>"><br>
         <label>Email:</label>
         <input type="text" name="email" value="<?php echo $row['Email']; ?>"><br>
-        <input type="submit" value="Save">
+        <input type="submit" value="Edit">
       </form>
     <?php } ?>
     </div>

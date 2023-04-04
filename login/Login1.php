@@ -41,7 +41,7 @@
             // Login Successful
             // Redirect to Artist Dashboard
             if(isset($_SESSION["id"])) {
-                header("location: Dashboard_artist.php");
+                header("location: ../artist/Dashboard_artist.php");
                 exit;
             }
         }
@@ -58,7 +58,7 @@
             // Login Successful
             // Redirect to Artist Manager Dashboard
             if(isset($_SESSION["id"])) {
-                header("location: Dashboard_manager.php");
+                header("location: ../manager/Dashboard_manager.php");
                 exit;
             }
         }
@@ -75,7 +75,7 @@
             // Login Successful
             // Redirect to Admin Dashboard
             if(isset($_SESSION["id"])) {
-                header("location: Dashboard_admin.php");
+                header("location: ../admin/Dashboard_admin.php");
                 exit;
             }
         }
@@ -84,12 +84,12 @@
         echo "Invalid login credentials";
     }
     ?>
-	<link rel="stylesheet" type="text/css" href="Styles.css">
+	<link rel="stylesheet" type="text/css" href="../Styles.css">
 </head>
 <body>
 	<nav>
 		<ul>
-            <li><a href="index.php">Home</a></li>
+            <li><a href="../index.php">Home</a></li>
             <li><a href="Login1.php">Artist</a></li>
             <li><a href="Login1.php">Manager</a></li>
             <li><a href="Login1.php">Admin</a></li>

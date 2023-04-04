@@ -2,12 +2,12 @@
 <html>
 <head>
 	<title>Login Page</title>
-	<link rel="stylesheet" type="text/css" href="Styles.css">
+	<link rel="stylesheet" type="text/css" href="../Styles.css">
 </head>
 <body>
 	<nav>
 		<ul>
-			<li><a href="index.php">Home</a></li>
+			<li><a href="../index.php">Home</a></li>
 			<li><a href="Login1.php">Artist</a></li>
             <li><a href="Login1.php">Manager</a></li>
             <li><a href="Login1.php">Admin</a></li>

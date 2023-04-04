@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['id'])) {
-    header("Location: Login1.php");
+    header("Location: ../login/Login1.php");
     exit();
 }
 
@@ -25,40 +25,38 @@ FROM event_t e
 INNER JOIN agreement_t a ON e.EventID = a.EventID
 INNER JOIN contract_t c ON a.ContractID = c.ContractID
 INNER JOIN venue_t v ON e.VenueID = v.VenueID
-WHERE c.ArtistID = :artistid";
+INNER JOIN contractedartist_t coa ON c.ArtistID = coa.ArtistID
+WHERE coa.AManagerID = :amanagerid";
 
 $stmt = $conn->prepare($query);
-$stmt->bindParam(':artistid', $_SESSION['id']);
-$stmt->execute();
-
-
-// Execute statement
+$stmt->bindParam(':amanagerid', $_SESSION['id']);
 $stmt->execute();
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Artist Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="Styles.css">
+    <title>Manager Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="../Styles.css">
 </head>
 <body>
     <nav>
         <ul>
-            <li><a href="Dashboard_artist.php">Dashboard</a></li>
-            <li><a href="Artist_contract.php">Contract</a></li>
-            <li><a href="Artist_payment.php">Payment</a></li>
-            <li><a href="Artist_schedule.php">Schedule</a></li>
-            <li><a href="Logout.php">Logout</a></li>
+            <li><a href="Dashboard_manager.php">Dashboard</a></li>
+            <li><a href="Manager_contract.php">Contract Calendar</a></li>
+            <li><a href="Manager_payment.php">Artist's Payment</a></li>
+            <li><a href="Manager_schedule.php">Artist's Schedule</a></li>
+            <li><a href="../login/Logout.php">Logout</a></li>
         </ul>
     </nav>
     <div class="box">
-        <h2>Welcome, <?php echo $_SESSION['firstname'] . " " . $_SESSION['lastname']; ?>!</h2>
-        <p>This is your Schedule.</p>
+        <h2>Welcome, Manager <?php echo $_SESSION['firstname'] . " " . $_SESSION['lastname']; ?>!</h2>
+        <p>This is your Artists's Schedule.</p>
     </div>
     <table>
         <thead>
             <tr>
+                <th>Artist ID</th>
                 <th>Venue</th>
                 <th>Description</th>
                 <th>Date</th>
@@ -73,6 +71,7 @@ $stmt->execute();
         <tbody>
             <?php while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>
             <tr>
+                <td><?php echo $row['ArtistID']; ?></td>
                 <td><?php echo $row['VenueName']; ?></td>
                 <td><?php echo $row['EventDesc']; ?></td>
                 <td><?php echo $row['DateTime']; ?></td>
